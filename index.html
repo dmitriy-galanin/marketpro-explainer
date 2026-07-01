@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>В чём загвоздка — MarketPro</title>
+<style>
+  :root{
+    --orange:#F5821F;
+    --orange-dark:#d96d0c;
+    --ink:#1a1f2b;
+    --muted:#6b7480;
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --green:#1faa59;
+    --red:#e2483d;
+    --line:#e7ebf0;
+    --shadow:0 10px 40px rgba(26,31,43,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  section{padding:72px 0}
+
+  /* HERO */
+  .hero{
+    background:radial-gradient(1200px 600px at 70% -10%,#3a2a18 0%,#161b26 45%,#0e1118 100%);
+    color:#fff;padding:88px 0 96px;position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(245,130,31,.35),transparent 60%);filter:blur(10px);
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;background:rgba(245,130,31,.15);
+    color:var(--orange);border:1px solid rgba(245,130,31,.35);padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;letter-spacing:.02em;margin-bottom:24px;
+  }
+  .hero h1{font-size:clamp(30px,5vw,52px);line-height:1.1;font-weight:800;letter-spacing:-.02em;max-width:760px}
+  .hero h1 .hl{color:var(--orange)}
+  .hero p.lead{margin-top:20px;font-size:clamp(17px,2.2vw,21px);color:#c4ccd6;max-width:640px}
+  .hero .meta{margin-top:28px;font-size:14px;color:#8a93a0}
+
+  /* TLDR strip */
+  .tldr{background:var(--orange);color:#fff}
+  .tldr .wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:center;padding-top:26px;padding-bottom:26px}
+  .tldr .big{font-size:clamp(20px,3vw,28px);font-weight:800;line-height:1.25}
+  .tldr .sub{font-size:15px;color:#fff;opacity:.92}
+
+  h2{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+  .eyebrow{color:var(--orange);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .section-intro{color:var(--muted);font-size:18px;max-width:680px;margin-bottom:36px}
+
+  /* analogy cards */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow)}
+  .card .ico{font-size:34px;margin-bottom:12px;display:block}
+  .card h3{font-size:18px;margin-bottom:6px}
+  .card p{color:var(--muted);font-size:15px}
+
+  /* flow */
+  .flow{background:#0e1118;color:#fff;border-radius:22px;padding:36px;margin-top:8px}
+  .flow .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+  .node{
+    background:#1b2130;border:1px solid #2a3242;border-radius:14px;padding:16px 18px;min-width:140px;text-align:center;
+  }
+  .node .t{font-weight:700;font-size:15px}
+  .node .s{font-size:12px;color:#8a93a0;margin-top:2px}
+  .node.bad{border-color:rgba(226,72,61,.6);background:#2a1b1d}
+  .node.ok{border-color:rgba(31,170,89,.5);background:#16271d}
+  .arrow{color:var(--orange);font-size:24px;font-weight:700}
+  .flow .label{text-align:center;color:#c4ccd6;margin-top:18px;font-size:15px}
+  .flow .label b{color:#fff}
+
+  /* compare */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .panel{border-radius:18px;padding:28px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);position:relative}
+  .panel.prod{border-top:5px solid var(--red)}
+  .panel.clone{border-top:5px solid var(--green)}
+  .panel h3{font-size:19px;display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .panel .where{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .panel ul{list-style:none}
+  .panel li{padding:8px 0 8px 28px;position:relative;font-size:15px;border-top:1px dashed var(--line)}
+  .panel li:first-child{border-top:none}
+  .panel li::before{position:absolute;left:0;top:8px;font-size:15px}
+  .panel.clone li::before{content:"✅"}
+  .panel.prod li::before{content:"❌"}
+  .verdict{margin-top:22px;background:#fff7ef;border:1px solid #ffd9b0;border-radius:14px;padding:18px 20px;font-size:16px}
+  .verdict b{color:var(--orange-dark)}
+
+  /* ask */
+  .ask{background:#0e1118;color:#fff;border-radius:22px;padding:40px}
+  .ask h2{color:#fff}
+  .ask .who{color:var(--orange);font-weight:700;margin-bottom:18px}
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  .check{background:#1b2130;border:1px solid #2a3242;border-radius:12px;padding:14px 16px;font-size:15px;display:flex;gap:10px;align-items:flex-start}
+  .check .k{color:var(--orange);font-weight:800}
+  .note{margin-top:20px;color:#8a93a0;font-size:14px}
+
+  /* cipa */
+  .cipa{background:linear-gradient(180deg,#fff 0%,#fff 100%)}
+  .cipa-box{border:2px solid var(--orange);border-radius:20px;padding:30px;background:#fff;box-shadow:var(--shadow)}
+  .cipa-box .tag{display:inline-block;background:var(--orange);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;padding:5px 12px;border-radius:999px;margin-bottom:14px}
+  .cipa-points{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-top:8px}
+  .cipa-points .p{background:var(--bg);border-radius:14px;padding:18px}
+  .cipa-points .p .n{width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .cipa-points .p h4{font-size:15px;margin-bottom:4px}
+  .cipa-points .p p{font-size:14px;color:var(--muted)}
+  .trackers{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:14px;font-weight:600;display:inline-flex;gap:8px;align-items:center}
+  .chip .dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+
+  footer{background:#0e1118;color:#8a93a0;text-align:center;padding:36px 0;font-size:14px}
+
+  @media (max-width:780px){
+    .cards,.compare,.checklist,.cipa-points{grid-template-columns:1fr}
+    .flow .row{flex-direction:column}
+    .arrow{transform:rotate(90deg)}
+    section{padding:52px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● Технический разбор · MarketPro</span>
+    <h1>Почему мы не можем редактировать шапку и подвал — <span class="hl">и при чём тут Cloudflare</span></h1>
+    <p class="lead">Спойлер: сам сайт исправен. Ломает его «ускоритель» поверх сайта. Объясняем на пальцах, без матчасти.</p>
+    <div class="meta">Разбор от 30.06.2026 · для тех, у кого есть доступ к WP Engine и Cloudflare</div>
+  </div>
+</header>
+
+<!-- TLDR -->
+<div class="tldr">
+  <div class="wrap">
+    <div>
+      <div class="big">Проблема не в WordPress. Она в слое WP&nbsp;Engine&nbsp;+&nbsp;Cloudflare поверх сайта.</div>
+      <div class="sub">Нужно, чтобы кто-то с доступом к этим панелям отключил оптимизацию JavaScript для админки.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SYMPTOM -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Что видно глазами</div>
+    <h2>В кастомайзере пропали пункты темы</h2>
+    <p class="section-intro">В «Внешний вид → Настроить» исчезли разделы Astra: <b>Header, Footer, Global, General</b>. Остались только базовые пункты WordPress. Итог — шапку и подвал отредактировать нельзя.</p>
+    <div class="cards">
+      <div class="card">
+        <span class="ico">🧩</span>
+        <h3>Чего не хватает</h3>
+        <p>Половины меню кастомайзера — именно тех пунктов, что отвечают за внешний вид сайта.</p>
+      </div>
+      <div class="card">
+        <span class="ico">😵‍💫</span>
+        <h3>Что кажется</h3>
+        <p>«Сломался сайт» или «слетела тема». На самом деле — нет.</p>
+      </div>
+      <div class="card">
+        <span class="ico">🔎</span>
+        <h3>Что на самом деле</h3>
+        <p>Сайт цел. Скрипты, которые рисуют эти пункты, не запускаются — их портят по дороге.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALOGY / FLOW -->
+<section style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">Аналогия на пальцах</div>
+    <h2>Представь курьера-«ускорителя»</h2>
+    <p class="section-intro">Cloudflare стоит между посетителем и сайтом и ускоряет доставку: он берёт все скрипты сайта и <b>переупаковывает их по-своему</b>, чтобы грузилось быстрее. Обычно полезно. Но иногда при переупаковке он <b>портит содержимое</b> — и скрипт перестаёт работать. Именно это происходит в админке.</p>
+
+    <div class="flow">
+      <div class="row">
+        <div class="node"><div class="t">Сайт</div><div class="s">отдаёт исправный скрипт</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Cloudflare / WP Engine</div><div class="s">«переупаковывает» JS</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Браузер</div><div class="s">получает мусор → ошибка</div></div>
+      </div>
+      <div class="label">Браузер ждёт код, а получает обрывок страницы → <b>скрипт падает</b> → пункты Astra не строятся.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF / COMPARE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Доказательство</div>
+    <h2>Мы собрали точную копию сайта — и она работает</h2>
+    <p class="section-intro">Подняли клон с <b>теми же</b> WordPress, плагинами и базой, но <b>без</b> слоя WP&nbsp;Engine/Cloudflare. Сравни:</p>
+
+    <div class="compare">
+      <div class="panel prod">
+        <h3>🌐 Прод (marketproinc.com)</h3>
+        <div class="where">WordPress + WP Engine + Cloudflare</div>
+        <ul>
+          <li>Пункты Header / Footer / Global — пропали</li>
+          <li>Скрипт в консоли падает: «Unexpected token»</li>
+          <li>Шапку и подвал не отредактировать</li>
+        </ul>
+      </div>
+      <div class="panel clone">
+        <h3>🧪 Клон (наш сервер)</h3>
+        <div class="where">Тот же WordPress, плагины и база — без CDN-слоя</div>
+        <ul>
+          <li>Все пункты Astra на месте</li>
+          <li>Скрипты отрабатывают чисто, ошибок нет</li>
+          <li>Шапка и подвал редактируются нормально</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="verdict">
+      Раз на копии с <b>идентичными</b> WordPress, плагинами и базой всё работает — значит дело <b>не в них</b>.
+      Единственное отличие — слой <b>WP&nbsp;Engine + Cloudflare</b> поверх прода. Виновник там.
+    </div>
+  </div>
+</section>
+
+<!-- ASK -->
+<section>
+  <div class="wrap">
+    <div class="ask">
+      <div class="eyebrow" style="color:var(--orange)">Что просим сделать</div>
+      <h2>Заглянуть в WP Engine и Cloudflare</h2>
+      <div class="who">Нужен человек с доступом к этим панелям (у нас доступа нет)</div>
+      <p style="color:#c4ccd6;margin-bottom:8px">Проверить и <b>отключить для <code>/wp-admin/*</code></b> любую оптимизацию JavaScript:</p>
+      <div class="checklist">
+        <div class="check"><span class="k">CF</span><span><b>Cloudflare:</b> Rocket Loader, Auto Minify (JS), Mirage</span></div>
+        <div class="check"><span class="k">WPE</span><span><b>WP Engine:</b> asset / JS-оптимизация и кэш</span></div>
+        <div class="check"><span class="k">⛔</span><span>Исключить <code>/wp-admin/</code> из кэширования</span></div>
+        <div class="check"><span class="k">✓</span><span>Проверить кастомайзер — должно сразу заработать</span></div>
+      </div>
+      <p class="note">Это правка на 5 минут в панели — не в коде сайта. Сам сайт трогать не нужно.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CIPA -->
+<section class="cipa">
+  <div class="wrap">
+    <div class="cipa-box">
+      <span class="tag">ВАЖНО ДЛЯ CIPA</span>
+      <h2>Тот же слой влияет на задачу с согласием на трекинг</h2>
+      <p class="section-intro" style="margin-bottom:24px">Мы как раз делаем cookie-consent (CIPA/Калифорния): ни один трекер не должен стартовать до согласия. И тот же «ускоритель», что ломает админку, может сорвать эту задачу.</p>
+      <div class="cipa-points">
+        <div class="p">
+          <div class="n">1</div>
+          <h4>Может обойти блокировку</h4>
+          <p>Если Cloudflare переписывает скрипты по-своему, он может протащить трекер мимо баннера согласия — и тот стрельнёт до клика. Это ровно то, что закон запрещает.</p>
+        </div>
+        <div class="p">
+          <div class="n">2</div>
+          <h4>Искажает проверку</h4>
+          <p>Чистим кэш WordPress — а Cloudflare отдаёт старую страницу. Финальная проверка «трекеры молчат» может оказаться ложной.</p>
+        </div>
+        <div class="p">
+          <div class="n">3</div>
+          <h4>Нужен тот же доступ</h4>
+          <p>Раз всё равно зовём человека чинить кастомайзер — сразу решим с ним кэш и оптимизацию фронта под задачу согласия.</p>
+        </div>
+      </div>
+      <p style="margin-top:26px;font-weight:600">Трекеры, которые нашли и которые надо привязать к согласию:</p>
+      <div class="trackers">
+        <span class="chip"><span class="dot"></span>LeadConnector / GoHighLevel</span>
+        <span class="chip"><span class="dot"></span>CallRail</span>
+        <span class="chip"><span class="dot"></span>Wistia</span>
+        <span class="chip"><span class="dot"></span>Google (GA4/Ads)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  MarketPro · технический разбор · подготовлено 30.06.2026
+</footer>
+
+</body>
+</html>
