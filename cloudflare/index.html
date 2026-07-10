@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Что поправить в Cloudflare — MarketPro</title>
+<style>
+  :root{
+    --orange:#F5821F;
+    --orange-dark:#d96d0c;
+    --ink:#1a1f2b;
+    --muted:#6b7480;
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --green:#1faa59;
+    --red:#e2483d;
+    --line:#e7ebf0;
+    --shadow:0 10px 40px rgba(26,31,43,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  section{padding:72px 0;scroll-margin-top:64px}
+  code{background:#eef1f5;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  /* HERO */
+  .hero{
+    background:radial-gradient(1200px 600px at 70% -10%,#3a2a18 0%,#161b26 45%,#0e1118 100%);
+    color:#fff;padding:88px 0 96px;position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(245,130,31,.35),transparent 60%);filter:blur(10px);
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;background:rgba(245,130,31,.15);
+    color:var(--orange);border:1px solid rgba(245,130,31,.35);padding:6px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;letter-spacing:.02em;margin-bottom:24px;
+  }
+  .hero h1{font-size:clamp(30px,5vw,52px);line-height:1.1;font-weight:800;letter-spacing:-.02em;max-width:800px}
+  .hero h1 .hl{color:var(--orange)}
+  .hero p.lead{margin-top:20px;font-size:clamp(17px,2.2vw,21px);color:#c4ccd6;max-width:660px}
+  .hero .meta{margin-top:28px;font-size:14px;color:#8a93a0}
+
+  /* SUMMARY CARD */
+  .summary{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:30px;margin:-46px auto 0;position:relative;z-index:3;max-width:952px}
+  .summary .st{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .sum{display:flex;gap:14px;align-items:flex-start}
+  .sum .b{width:36px;height:36px;flex:none;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .sum h4{font-size:16px;margin-bottom:2px}
+  .sum p{font-size:14px;color:var(--muted)}
+  .sum-foot{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:15px;color:var(--muted)}
+  .sum-foot b{color:var(--ink)}
+
+  /* STICKY NAV */
+  .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .nav a{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:999px;white-space:nowrap}
+  .nav a:hover{background:var(--bg);color:var(--ink)}
+  .nav a.cta{background:var(--orange);color:#fff}
+  .nav a.cta:hover{background:var(--orange-dark);color:#fff}
+
+  h2{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+  .eyebrow{color:var(--orange);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .section-intro{color:var(--muted);font-size:18px;max-width:720px;margin-bottom:36px}
+
+  /* PROVEN strip */
+  .proven{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pv{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .pv .ico{font-size:28px;display:block;margin-bottom:10px}
+  .pv h3{font-size:16px;margin-bottom:4px}
+  .pv p{color:var(--muted);font-size:14px}
+
+  /* FIXES */
+  .fix{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow);margin-bottom:20px;position:relative;overflow:hidden}
+  .fix::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--orange)}
+  .fix.prio::before{background:var(--red)}
+  .fix.low::before{background:#c3cad3}
+  .fix-head{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .fix-n{width:38px;height:38px;flex:none;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .fix.prio .fix-n{background:var(--red)}
+  .fix.low .fix-n{background:#8b95a1}
+  .fix-title{flex:1;min-width:260px}
+  .fix-title h3{font-size:20px;line-height:1.25}
+  .fix-title .path{font-size:13px;color:var(--muted);margin-top:4px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .pill{font-size:11px;font-weight:800;letter-spacing:.05em;padding:5px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+  .pill.off{background:#fdecea;color:var(--red);border:1px solid #f6c9c4}
+  .pill.guess{background:#fff7ef;color:var(--orange-dark);border:1px solid #ffd9b0}
+  .fix-body{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .fx{background:var(--bg);border-radius:12px;padding:16px}
+  .fx .k{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .fx p{font-size:15px}
+  .fx.risk{background:#fff7ef;border:1px solid #ffd9b0}
+  .fx.risk .k{color:var(--orange-dark)}
+  ul.mini{list-style:none;margin-top:10px}
+  ul.mini li{position:relative;padding:6px 0 6px 20px;font-size:15px}
+  ul.mini li::before{content:"–";position:absolute;left:0;color:var(--orange);font-weight:800}
+
+  /* FLOW */
+  .flow{background:#0e1118;color:#fff;border-radius:22px;padding:36px}
+  .flow .row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+  .node{background:#1b2130;border:1px solid #2a3242;border-radius:14px;padding:16px 18px;min-width:150px;text-align:center}
+  .node .t{font-weight:700;font-size:15px}
+  .node .s{font-size:12px;color:#8a93a0;margin-top:2px}
+  .node.bad{border-color:rgba(226,72,61,.6);background:#2a1b1d}
+  .node.ok{border-color:rgba(31,170,89,.5);background:#16271d}
+  .arrow{color:var(--orange);font-size:24px;font-weight:700}
+  .flow .label{text-align:center;color:#c4ccd6;margin-top:18px;font-size:15px}
+  .flow .label b{color:#fff}
+
+  /* SCREENSHOTS */
+  .shots{display:grid;gap:12px}
+  .shot{background:#1b2130;border:1px solid #2a3242;border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+  .shot input{margin-top:5px;width:18px;height:18px;flex:none;accent-color:var(--orange);cursor:pointer}
+  .shot label{cursor:pointer;flex:1}
+  .shot .nm{font-weight:700;font-size:15px;color:#fff}
+  .shot .pt{font-size:13px;color:var(--orange);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:3px}
+  .shot .wy{font-size:13px;color:#8a93a0;margin-top:5px}
+  .shot input:checked ~ label .nm{text-decoration:line-through;opacity:.5}
+  .shot.star{border-color:rgba(245,130,31,.6)}
+  .shot.star .nm::after{content:" ★ важнее всего";color:var(--orange);font-weight:600;font-size:12px;letter-spacing:.02em}
+
+  .ask{background:#0e1118;color:#fff;border-radius:22px;padding:40px}
+  .ask h2{color:#fff}
+  .ask .who{color:var(--orange);font-weight:700;margin-bottom:18px}
+  .note{margin-top:22px;color:#8a93a0;font-size:14px}
+
+  /* GROUPS inside the final ask */
+  .group{display:flex;gap:16px;align-items:flex-start;margin:52px 0 22px}
+  .group:first-of-type{margin-top:10px}
+  .g-n{width:42px;height:42px;flex:none;border-radius:12px;background:var(--orange);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:19px}
+  .group .g-t{flex:1;min-width:220px}
+  .group h3{font-size:23px;line-height:1.2;margin-bottom:4px}
+  .group p{color:var(--muted);font-size:15px}
+  .group a{color:var(--orange-dark);font-weight:600}
+
+  /* light checklist (toggles) */
+  .ticks{display:grid;gap:12px}
+  .tick{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start}
+  .tick input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--orange);cursor:pointer}
+  .tick label{cursor:pointer;flex:1}
+  .tick .nm{font-weight:700;font-size:16px}
+  .tick .pt{font-size:13px;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:3px}
+  .tick .wy{font-size:14px;color:var(--muted);margin-top:5px}
+  .tick input:checked ~ label .nm{text-decoration:line-through;opacity:.5}
+
+  /* ACCESS ITEMS */
+  .item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);margin-bottom:18px}
+  .item-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:12px}
+  .item-n{width:34px;height:34px;flex:none;border-radius:10px;background:var(--ink);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .item-head h3{font-size:19px;flex:1;min-width:200px}
+  .item p{font-size:15px}
+  .item p + p{margin-top:10px}
+  .where-box{margin-top:14px;background:var(--bg);border-radius:12px;padding:14px 16px;font-size:14px}
+  .where-box .k{font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .perm{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+  .perm th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line)}
+  .perm td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .perm td:first-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:600;white-space:nowrap}
+  .safe{margin-top:16px;background:#eefaf2;border:1px solid #bfe8ce;border-radius:12px;padding:14px 16px;font-size:15px}
+  .safe b{color:var(--green)}
+
+  .verdict{margin-top:26px;background:#fff7ef;border:1px solid #ffd9b0;border-radius:14px;padding:18px 20px;font-size:16px}
+  .verdict b{color:var(--orange-dark)}
+
+  footer{background:#0e1118;color:#8a93a0;text-align:center;padding:36px 0;font-size:14px}
+
+  @media (max-width:780px){
+    .proven,.fix-body,.sum-grid{grid-template-columns:1fr}
+    .flow .row{flex-direction:column}
+    .arrow{transform:rotate(90deg)}
+    section{padding:52px 0}
+    .summary{margin-top:-30px;padding:24px}
+    .nav .wrap{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+    .perm td:first-child{white-space:normal}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● Запрос на правки · MarketPro</span>
+    <h1>Три галки в Cloudflare, <span class="hl">которые чинят сразу два блокера</span></h1>
+    <p class="lead">Одна из них, вероятно, чинит кастомайзер. Вторая открывает нам доступ к сайту. Третья убирает трекер, который иначе провалит задачу по CIPA.</p>
+    <div class="meta">10.07.2026 · нужен человек с доступом к панели Cloudflare · время работы ~15 минут</div>
+  </div>
+</header>
+
+<!-- SUMMARY -->
+<div class="wrap">
+  <div class="summary">
+    <div class="st">Если читать некогда</div>
+    <div class="sum-grid">
+      <div class="sum">
+        <div class="b">🔻</div>
+        <div>
+          <h4>Выключить 3 галки</h4>
+          <p>В панели Cloudflare. Каждая возвращается на место одним кликом.</p>
+        </div>
+      </div>
+      <div class="sum">
+        <div class="b">🔑</div>
+        <div>
+          <h4>Прислать API-токен</h4>
+          <p>Ограниченный одним доменом. Чтобы правки наконец доезжали до сайта.</p>
+        </div>
+      </div>
+      <div class="sum">
+        <div class="b">📸</div>
+        <div>
+          <h4>Сделать 3 скриншота</h4>
+          <p>Чтобы мы перестали гадать, что именно блокирует сайт.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sum-foot">
+      Времени — <b>около 15 минут</b>. В код сайта не лезем, сам сайт не трогаем. Всё делается переключателями в панели.
+      <b><a href="#need" style="color:var(--orange-dark)">Сразу к списку задач →</a></b>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <a href="#proven">Что уже проверено</a>
+    <a href="#fixes">Что выключить</a>
+    <a href="#why">Почему это важно</a>
+    <a href="#cache">Почему правки не доезжают</a>
+    <a href="#need" class="cta">Что нужно от вас</a>
+  </div>
+</nav>
+
+<!-- WHAT WE ALREADY KNOW -->
+<section id="proven">
+  <div class="wrap">
+    <div class="eyebrow">Прежде чем просить</div>
+    <h2>Мы не гадаем — вот что уже проверено</h2>
+    <p class="section-intro">Чтобы не тратить ваше время на ложные версии: несколько гипотез мы уже отработали и отбросили.</p>
+    <div class="proven">
+      <div class="pv">
+        <span class="ico">🧪</span>
+        <h3>Собрали копию сайта</h3>
+        <p>Тот же WordPress, те же плагины, та же база — но без Cloudflare. На копии всё работает. Значит дело не в сайте.</p>
+      </div>
+      <div class="pv">
+        <span class="ico">📄</span>
+        <h3>Проверили файлы</h3>
+        <p>Скрипты на сервере целы, по прямой ссылке отдаются корректно. «Файлы пропали» — версия отпала.</p>
+      </div>
+      <div class="pv">
+        <span class="ico">🔌</span>
+        <h3>Перебрали плагины</h3>
+        <p>Отключали подозрительные по одному — не помогло. Плагины и тема оправданы.</p>
+      </div>
+    </div>
+    <div class="verdict">
+      Единственное отличие сломанного прода от рабочей копии — <b>слой Cloudflare поверх сайта</b>.
+      Дальше без доступа к панели мы продвинуться не можем.
+    </div>
+  </div>
+</section>
+
+<!-- THE FIXES -->
+<section id="fixes" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">Что просим выключить</div>
+    <h2>Три переключателя</h2>
+    <p class="section-intro">По каждому: что это, зачем выключать и что мы при этом теряем. Ничего не скрываем — у каждой правки есть цена, хоть и небольшая.</p>
+
+    <!-- FIX 1 -->
+    <div class="fix prio">
+      <div class="fix-head">
+        <div class="fix-n">1</div>
+        <div class="fix-title">
+          <h3>Email Address Obfuscation</h3>
+          <div class="path">Security → Settings → Email Address Obfuscation</div>
+        </div>
+        <span class="pill guess">гипотеза · проверяется за 2 мин</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Зачем выключать</div>
+          <p>Скорее всего <b>именно он ломает кастомайзер</b>. Функция прячет email-адреса от спам-ботов: находит почту в HTML и заменяет ссылкой-заглушкой. Проблема в том, что она лезет и <b>внутрь скриптов</b> — и если в коде попалось что-то похожее на почту, она втыкает туда кусок HTML. Скрипт после этого падает.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">Что теряем</div>
+          <p>Email-адреса на страницах станут видны спам-ботам, как обычный текст. Мелочь, но честно предупреждаем. Если критично — потом закроем это на стороне сайта.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIX 2 -->
+    <div class="fix prio">
+      <div class="fix-head">
+        <div class="fix-n">2</div>
+        <div class="fix-title">
+          <h3>Browser Integrity Check</h3>
+          <div class="path">Security → Settings → Browser Integrity Check</div>
+        </div>
+        <span class="pill off">блокирует нашу работу</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Зачем выключать</div>
+          <p>Он решает, «настоящий ли браузер» постучался, и отбивает всё остальное страницей <code>403</code>. Под раздачу попадают наши рабочие инструменты:</p>
+          <ul class="mini">
+            <li><b>Не работает WordPress MCP</b> — им мы вносим правки и выгружаем страницы пакетно. Сейчас всё приходится делать руками через браузер.</li>
+            <li><b>Нельзя проверить трекеры удалённо</b> — то есть подтвердить, что задача по CIPA выполнена, мы не сможем.</li>
+          </ul>
+        </div>
+        <div class="fx risk">
+          <div class="k">Что теряем</div>
+          <p>Почти ничего. Это грубая проверка заголовков, а не серьёзная защита — основную работу делают WAF и DDoS-защита, их мы не трогаем.</p>
+          <p><b>Если выключать нельзя:</b> оставьте включённым, но добавьте правило-исключение для адресов <code>/wp-json/</code> и <code>/wp-admin/</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIX 3 -->
+    <div class="fix">
+      <div class="fix-head">
+        <div class="fix-n">3</div>
+        <div class="fix-title">
+          <h3>Web Analytics (RUM)</h3>
+          <div class="path">Speed → Settings → Recommendations → Web analytics</div>
+        </div>
+        <span class="pill off">риск по CIPA</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Зачем выключать</div>
+          <p>Это <b>собственный аналитический трекер Cloudflare</b>. Он стреляет до того, как посетитель нажал «Согласен» — ровно то, за что пришла претензия. И его <b>невозможно закрыть баннером согласия</b> (объясняем ниже, почему). Пользы от него нет: аналитика уже собирается через Google Analytics.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">Что теряем</div>
+          <p>Статистику посещаемости внутри панели Cloudflare. Те же цифры есть в GA4, так что потери фактически нет.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIX 4 -->
+    <div class="fix low">
+      <div class="fix-head">
+        <div class="fix-n">4</div>
+        <div class="fix-title">
+          <h3>Мелочи: JS Detections и Schema validation</h3>
+          <div class="path">Security → Settings</div>
+        </div>
+        <span class="pill guess">по желанию</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Зачем выключать</div>
+          <p><b>JS Detections</b> подмешивает на страницы ещё один скрипт Cloudflare — лишний в задаче про согласие. <b>Schema validation</b> включена, но настроена в пустую (ноль схем, действие «ничего не делать») — просто мусор в настройках.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">Что теряем</div>
+          <p>Ничего заметного. Это уборка, а не лечение — можно оставить на потом.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CMP CANT BLOCK -->
+<section id="why">
+  <div class="wrap">
+    <div class="eyebrow">Почему это важно именно сейчас</div>
+    <h2>Баннер согласия не может остановить скрипты Cloudflare</h2>
+    <p class="section-intro">Это ключевой момент, который легко упустить. Плагин согласия (Complianz) живёт <b>внутри WordPress</b>. Cloudflare добавляет свои скрипты <b>уже после</b> того, как WordPress отдал страницу — то есть ниже по течению. Плагин физически не видит их и не может заблокировать.</p>
+
+    <div class="flow">
+      <div class="row">
+        <div class="node ok"><div class="t">WordPress</div><div class="s">Complianz блокирует трекеры ✓</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Cloudflare</div><div class="s">дописывает свои скрипты</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Браузер</div><div class="s">трекер стреляет без согласия</div></div>
+      </div>
+      <div class="label">Плагин сделал свою работу, но <b>Cloudflare добавил трекер уже после него</b>. Единственный способ — выключить в панели.</div>
+    </div>
+
+    <div class="verdict">
+      Вывод: пока эти галки включены, задачу по CIPA <b>нельзя закрыть никаким плагином</b>. Это не вопрос настройки сайта — это вопрос настройки Cloudflare.
+    </div>
+  </div>
+</section>
+
+<!-- CACHE PROBLEM -->
+<section id="cache" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">Отдельная боль</div>
+    <h2>Правки не доезжают до сайта</h2>
+    <p class="section-intro">Мы меняем текст или добавляем скрипт — на сайте ничего не появляется. Иногда неделями. Причина простая, и она тоже в Cloudflare.</p>
+
+    <div class="flow">
+      <div class="row">
+        <div class="node ok"><div class="t">Мы правим сайт</div><div class="s">изменения сохранены</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Cloudflare</div><div class="s">отдаёт копию из кэша</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Посетитель</div><div class="s">видит старую версию</div></div>
+      </div>
+      <div class="label">Чтобы Cloudflare отдал свежую страницу, кэш нужно <b>сбросить</b>. Кнопки для этого у нас сейчас нет.</div>
+    </div>
+
+    <div class="verdict" style="margin-top:26px">
+      В WordPress <b>уже установлен официальный плагин Cloudflare</b> — с кнопкой сброса кэша и автоочисткой при сохранении страницы.
+      Раньше он <b>был подключён</b>, но авторизация слетела: сейчас поля для ключа пустые, и плагин снова просит войти.
+      Нужен новый токен — и боль уходит.
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE NEED -->
+<section id="need">
+  <div class="wrap">
+    <div class="eyebrow">Просьба</div>
+    <h2>Что нам нужно от вас</h2>
+    <p class="section-intro">Всё, о чём мы просим, — в одном списке. Три блока: что выключить, что прислать и что сфотографировать. Работы в панели — минут пятнадцать.</p>
+
+    <!-- GROUP A -->
+    <div class="group">
+      <div class="g-n">А</div>
+      <div class="g-t">
+        <h3>Выключить три переключателя</h3>
+        <p>Обоснование по каждому — <a href="#fixes">в разделе выше</a>. Все обратимы одним кликом.</p>
+      </div>
+    </div>
+
+    <div class="ticks">
+      <div class="tick">
+        <input type="checkbox" id="t1">
+        <label for="t1">
+          <div class="nm">1. Email Address Obfuscation</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Скорее всего именно он ломает кастомайзер — шапку и подвал сейчас не отредактировать.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="t2">
+        <label for="t2">
+          <div class="nm">2. Browser Integrity Check</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Отбивает наши инструменты страницей <code>403</code>. Из-за него сайт нельзя править и проверять удалённо.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="t3">
+        <label for="t3">
+          <div class="nm">3. Web Analytics (RUM)</div>
+          <div class="pt">Speed → Settings → Recommendations</div>
+          <div class="wy">Трекер Cloudflare, стреляет до согласия. Баннером его не остановить — только этой галкой.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="t4">
+        <label for="t4">
+          <div class="nm">4. По желанию: JS Detections и Schema validation</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Уборка, а не лечение. Можно оставить на потом.</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- GROUP B -->
+    <div class="group">
+      <div class="g-n">Б</div>
+      <div class="g-t">
+        <h3>Прислать доступы</h3>
+        <p>Три пункта. Ни один не даёт доступа к вашему аккаунту, домену или биллингу.</p>
+      </div>
+    </div>
+
+    <!-- 1. TOKEN -->
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">1</div>
+        <h3>API-токен Cloudflare</h3>
+      </div>
+      <p>Чтобы подключить уже установленный плагин и получить кнопку сброса кэша. <b>Global API Key присылать не нужно</b> — он даёт полный доступ ко всему аккаунту. Нужен именно <b>токен</b>, ограниченный одним доменом.</p>
+
+      <table class="perm">
+        <tr><th>Раздел</th><th>Право</th><th>Зачем</th></tr>
+        <tr><td>Zone → Zone</td><td>Read</td><td>чтобы плагин нашёл нужный домен</td></tr>
+        <tr><td>Zone → Zone Settings</td><td>Edit</td><td>читать и менять настройки этого домена</td></tr>
+        <tr><td>Zone → Cache Purge</td><td>Purge</td><td>собственно сброс кэша</td></tr>
+      </table>
+
+      <div class="where-box">
+        <div class="k">Где создать</div>
+        <b>My Profile → API Tokens → Create Token → Custom token</b><br>
+        В поле <b>Zone Resources</b> выбрать: Include → Specific zone → <code>marketproinc.com</code>
+      </div>
+
+      <div class="safe">
+        <b>Это безопасно.</b> Таким токеном нельзя тронуть DNS, другие домены, счета или настройки аккаунта. Только кэш и настройки одного этого сайта. Токен можно отозвать в любой момент одной кнопкой.
+      </div>
+    </div>
+
+    <!-- 2. EMAIL -->
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">2</div>
+        <h3>Email аккаунта Cloudflare</h3>
+      </div>
+      <p>Тот адрес, на который заведён аккаунт с доменом <code>marketproinc.com</code>. Плагин может попросить его вместе с токеном.</p>
+      <p style="color:var(--muted)">Сам по себе email ничего не открывает — без токена он бесполезен. Просим на всякий случай, чтобы не гонять переписку по второму кругу.</p>
+    </div>
+
+    <!-- 3. ZONE ID -->
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">3</div>
+        <h3>Zone ID</h3>
+      </div>
+      <p>Внутренний номер вашего домена в Cloudflare — строка из 32 символов. Нужен, потому что интерфейс Cloudflare адресует домены по номеру, а не по названию.</p>
+      <div class="where-box">
+        <div class="k">Где взять</div>
+        Выбрать домен <code>marketproinc.com</code> → вкладка <b>Overview</b> → прокрутить вниз, <b>правая колонка</b>, блок <b>API</b>.<br>
+        Там два поля: <b>Zone ID</b> и Account ID. Нужен первый, у него есть кнопка «Click to copy».
+      </div>
+      <p style="color:var(--muted);margin-top:12px">Не секрет: это просто адрес, как номер дома. Без токена по нему ничего сделать нельзя.</p>
+    </div>
+
+    <!-- GROUP C -->
+    <div class="group">
+      <div class="g-n">В</div>
+      <div class="g-t">
+        <h3>Прислать три скриншота</h3>
+        <p>Чтобы мы перестали гадать. По убыванию важности — первый ценнее двух остальных вместе.</p>
+      </div>
+    </div>
+
+    <div class="ask">
+      <p style="color:#c4ccd6;margin-bottom:14px">На присланных ранее скриншотах видна страница <b>Settings</b> — там только <i>карточки</i> настроек. Нам нужны <i>списки правил</i>, а они лежат в соседних разделах.</p>
+      <p style="color:#8a93a0;margin-bottom:22px;font-size:14px">📍 <b>Где искать:</b> <b>Events</b> и <b>WAF</b> — это не карточки на странице Settings, а отдельные пункты <b>в левом меню</b>, внутри раздела <b>Security</b>. Рядом с пунктом Settings, по которому сделаны первые скриншоты.</p>
+
+      <div class="shots">
+        <div class="shot star">
+          <input type="checkbox" id="s1">
+          <label for="s1">
+            <div class="nm">Журнал блокировок</div>
+            <div class="pt">Security → Events · период 24 часа · фильтр Action = Block</div>
+            <div class="wy">Покажет точное правило, которое нас отбивает, — с его названием и номером. Это прямой ответ вместо наших догадок.</div>
+          </label>
+        </div>
+        <div class="shot star">
+          <input type="checkbox" id="s2">
+          <label for="s2">
+            <div class="nm">Оптимизация скриптов и кэш страниц</div>
+            <div class="pt">Speed → Optimization → Content Optimization</div>
+            <div class="wy">Нужно убедиться, что <b>Rocket Loader выключен</b>. По нашим наблюдениям он и так выключен, но проверить стоит: если он всё же включён, он меняет порядок загрузки скриптов и <b>помешает блокировке трекеров</b> — то есть сорвёт основную задачу. Заодно на этой же вкладке видно, включён ли <b>APO</b> (Automatic Platform Optimization) — режим, в котором Cloudflare складывает готовые страницы сайта к себе и отдаёт их посетителям вместо того, чтобы каждый раз спрашивать WordPress. Именно из-за него правки могут не доезжать до сайта.</div>
+          </label>
+        </div>
+        <div class="shot">
+          <input type="checkbox" id="s3">
+          <label for="s3">
+            <div class="nm">Правила WAF</div>
+            <div class="pt">Security → WAF → вкладки Custom rules и Tools (IP Access Rules)</div>
+            <div class="wy">Два места, где может стоять блокировка по IP-адресу. Если списки пустые — так и напишите, это тоже ответ.</div>
+          </label>
+        </div>
+      </div>
+
+      <p class="note">Скриншот целиком, со всем списком. Остальное спросим потом, если понадобится.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  MarketPro · запрос на правки в Cloudflare · подготовлено 10.07.2026
+</footer>
+
+</body>
+</html>
