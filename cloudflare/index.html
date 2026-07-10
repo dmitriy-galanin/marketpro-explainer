@@ -51,10 +51,16 @@
   #L-en:checked ~ #doc-en{display:block}
   #L-ru:checked ~ #doc-ru{display:block}
 
-  .langs{margin-left:auto;display:flex;gap:6px;align-items:center}
-  .langs label,.langs span{font-size:13px;font-weight:800;letter-spacing:.04em;padding:7px 13px;border-radius:999px;cursor:pointer;color:var(--muted);border:1px solid var(--line);background:#fff}
-  .langs label:hover{background:var(--bg);color:var(--ink)}
-  .langs span.on{background:var(--ink);color:#fff;border-color:var(--ink);cursor:default}
+  /* language switch pinned to the top-right corner of the hero */
+  .langs{position:absolute;top:22px;right:24px;z-index:5;display:flex;gap:6px;align-items:center}
+  .langs label,.langs span{
+    font-size:13px;font-weight:800;letter-spacing:.04em;padding:7px 14px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#c4ccd6;
+    backdrop-filter:blur(6px);
+  }
+  .langs label{cursor:pointer}
+  .langs label:hover{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.4)}
+  .langs span.on{background:var(--orange);color:#fff;border-color:var(--orange);cursor:default}
 
   /* HERO */
   .hero{
@@ -202,7 +208,7 @@
     section{padding:52px 0}
     .summary{margin-top:-30px;padding:24px}
     .nav .wrap{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
-    .langs{margin-left:8px}
+    .langs{top:14px;right:16px}
     .perm td:first-child{white-space:normal}
   }
 </style>
@@ -216,6 +222,10 @@
 <div class="doc" id="doc-en" lang="en">
 
 <header class="hero">
+  <div class="langs">
+    <span class="on">EN</span>
+    <label for="L-ru">RU</label>
+  </div>
   <div class="wrap">
     <span class="badge">● Action required · MarketPro</span>
     <h1>Three Cloudflare toggles that <span class="hl">fix two blockers at once</span></h1>
@@ -264,10 +274,6 @@
     <a href="#en-why">Why it matters</a>
     <a href="#en-cache">Why changes don't show up</a>
     <a href="#en-need" class="cta">What we need from you</a>
-    <div class="langs">
-      <span class="on">EN</span>
-      <label for="L-ru">RU</label>
-    </div>
   </div>
 </nav>
 
@@ -606,6 +612,10 @@
 <div class="doc" id="doc-ru" lang="ru">
 
 <header class="hero">
+  <div class="langs">
+    <label for="L-en">EN</label>
+    <span class="on">RU</span>
+  </div>
   <div class="wrap">
     <span class="badge">● Запрос на правки · MarketPro</span>
     <h1>Три галки в Cloudflare, <span class="hl">которые чинят сразу два блокера</span></h1>
@@ -654,10 +664,6 @@
     <a href="#ru-why">Почему это важно</a>
     <a href="#ru-cache">Почему правки не доезжают</a>
     <a href="#ru-need" class="cta">Что нужно от вас</a>
-    <div class="langs">
-      <label for="L-en">EN</label>
-      <span class="on">RU</span>
-    </div>
   </div>
 </nav>
 
