@@ -1,11 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="googlebot" content="noindex, nofollow">
-<title>Что поправить в Cloudflare — MarketPro</title>
+<title>Cloudflare fixes needed — MarketPro</title>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110311184', 'ym');
+
+    ym(110311184, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/110311184" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
 <style>
   :root{
     --orange:#F5821F;
@@ -29,6 +44,18 @@
   section{padding:72px 0;scroll-margin-top:64px}
   code{background:#eef1f5;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.9em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 
+  /* LANGUAGE SWITCH — pure CSS, no JS.
+     Two hidden radios live at the top of <body>; each language block is their sibling. */
+  .lang-radio{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .doc{display:none}
+  #L-en:checked ~ #doc-en{display:block}
+  #L-ru:checked ~ #doc-ru{display:block}
+
+  .langs{margin-left:auto;display:flex;gap:6px;align-items:center}
+  .langs label,.langs span{font-size:13px;font-weight:800;letter-spacing:.04em;padding:7px 13px;border-radius:999px;cursor:pointer;color:var(--muted);border:1px solid var(--line);background:#fff}
+  .langs label:hover{background:var(--bg);color:var(--ink)}
+  .langs span.on{background:var(--ink);color:#fff;border-color:var(--ink);cursor:default}
+
   /* HERO */
   .hero{
     background:radial-gradient(1200px 600px at 70% -10%,#3a2a18 0%,#161b26 45%,#0e1118 100%);
@@ -43,9 +70,9 @@
     color:var(--orange);border:1px solid rgba(245,130,31,.35);padding:6px 14px;border-radius:999px;
     font-size:13px;font-weight:600;letter-spacing:.02em;margin-bottom:24px;
   }
-  .hero h1{font-size:clamp(30px,5vw,52px);line-height:1.1;font-weight:800;letter-spacing:-.02em;max-width:800px}
+  .hero h1{font-size:clamp(30px,5vw,52px);line-height:1.1;font-weight:800;letter-spacing:-.02em;max-width:820px}
   .hero h1 .hl{color:var(--orange)}
-  .hero p.lead{margin-top:20px;font-size:clamp(17px,2.2vw,21px);color:#c4ccd6;max-width:660px}
+  .hero p.lead{margin-top:20px;font-size:clamp(17px,2.2vw,21px);color:#c4ccd6;max-width:680px}
   .hero .meta{margin-top:28px;font-size:14px;color:#8a93a0}
 
   /* SUMMARY CARD */
@@ -61,7 +88,7 @@
 
   /* STICKY NAV */
   .nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--line)}
-  .nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .nav .wrap{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding-top:10px;padding-bottom:10px}
   .nav a{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;padding:8px 14px;border-radius:999px;white-space:nowrap}
   .nav a:hover{background:var(--bg);color:var(--ink)}
   .nav a.cta{background:var(--orange);color:#fff}
@@ -71,7 +98,7 @@
   .eyebrow{color:var(--orange);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
   .section-intro{color:var(--muted);font-size:18px;max-width:720px;margin-bottom:36px}
 
-  /* PROVEN strip */
+  /* PROVEN */
   .proven{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
   .pv{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
   .pv .ico{font-size:28px;display:block;margin-bottom:10px}
@@ -125,14 +152,11 @@
   .shot .wy{font-size:13px;color:#8a93a0;margin-top:5px}
   .shot input:checked ~ label .nm{text-decoration:line-through;opacity:.5}
   .shot.star{border-color:rgba(245,130,31,.6)}
-  .shot.star .nm::after{content:" ★ важнее всего";color:var(--orange);font-weight:600;font-size:12px;letter-spacing:.02em}
 
   .ask{background:#0e1118;color:#fff;border-radius:22px;padding:40px}
-  .ask h2{color:#fff}
-  .ask .who{color:var(--orange);font-weight:700;margin-bottom:18px}
   .note{margin-top:22px;color:#8a93a0;font-size:14px}
 
-  /* GROUPS inside the final ask */
+  /* GROUPS */
   .group{display:flex;gap:16px;align-items:flex-start;margin:52px 0 22px}
   .group:first-of-type{margin-top:10px}
   .g-n{width:42px;height:42px;flex:none;border-radius:12px;background:var(--orange);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:19px}
@@ -141,7 +165,6 @@
   .group p{color:var(--muted);font-size:15px}
   .group a{color:var(--orange-dark);font-weight:600}
 
-  /* light checklist (toggles) */
   .ticks{display:grid;gap:12px}
   .tick{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start}
   .tick input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--orange);cursor:pointer}
@@ -179,13 +202,409 @@
     section{padding:52px 0}
     .summary{margin-top:-30px;padding:24px}
     .nav .wrap{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch}
+    .langs{margin-left:8px}
     .perm td:first-child{white-space:normal}
   }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
+<input type="radio" name="lang" id="L-en" class="lang-radio" checked>
+<input type="radio" name="lang" id="L-ru" class="lang-radio">
+
+<!-- ============================== ENGLISH ============================== -->
+<div class="doc" id="doc-en" lang="en">
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● Action required · MarketPro</span>
+    <h1>Three Cloudflare toggles that <span class="hl">fix two blockers at once</span></h1>
+    <p class="lead">One of them most likely fixes the Customizer. The second gives us access to the site. The third removes a tracker that would otherwise sink the CIPA compliance work.</p>
+    <div class="meta">July 10, 2026 · needs someone with Cloudflare dashboard access · about 15 minutes of work</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="summary">
+    <div class="st">If you only have a minute</div>
+    <div class="sum-grid">
+      <div class="sum">
+        <div class="b">🔻</div>
+        <div>
+          <h4>Turn off 3 toggles</h4>
+          <p>In the Cloudflare dashboard. Each one is reversible with a single click.</p>
+        </div>
+      </div>
+      <div class="sum">
+        <div class="b">🔑</div>
+        <div>
+          <h4>Send us an API token</h4>
+          <p>Scoped to one domain. So our changes finally reach the live site.</p>
+        </div>
+      </div>
+      <div class="sum">
+        <div class="b">📸</div>
+        <div>
+          <h4>Take 3 screenshots</h4>
+          <p>So we stop guessing what exactly is blocking the site.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sum-foot">
+      Roughly <b>15 minutes</b> of work. We do not touch the site's code, and we do not touch the site itself — everything happens through dashboard toggles.
+      <b><a href="#en-need" style="color:var(--orange-dark)">Jump to the task list →</a></b>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#en-proven">What we ruled out</a>
+    <a href="#en-fixes">What to turn off</a>
+    <a href="#en-why">Why it matters</a>
+    <a href="#en-cache">Why changes don't show up</a>
+    <a href="#en-need" class="cta">What we need from you</a>
+    <div class="langs">
+      <span class="on">EN</span>
+      <label for="L-ru">RU</label>
+    </div>
+  </div>
+</nav>
+
+<section id="en-proven">
+  <div class="wrap">
+    <div class="eyebrow">Before we ask</div>
+    <h2>We're not guessing — here's what we already checked</h2>
+    <p class="section-intro">So we don't waste your time on dead ends: several theories have already been tested and ruled out.</p>
+    <div class="proven">
+      <div class="pv">
+        <span class="ico">🧪</span>
+        <h3>We rebuilt the site</h3>
+        <p>Same WordPress, same plugins, same database — but with no Cloudflare in front. On the copy, everything works. So the site itself is not at fault.</p>
+      </div>
+      <div class="pv">
+        <span class="ico">📄</span>
+        <h3>We checked the files</h3>
+        <p>The scripts on the server are intact and load correctly when opened directly. "The files are missing" is ruled out.</p>
+      </div>
+      <div class="pv">
+        <span class="ico">🔌</span>
+        <h3>We went through the plugins</h3>
+        <p>We disabled the suspicious ones one by one. No change. Plugins and the theme are cleared.</p>
+      </div>
+    </div>
+    <div class="verdict">
+      The only difference between the broken production site and the working copy is <b>the Cloudflare layer sitting in front of it</b>.
+      Without access to the dashboard, we cannot go any further.
+    </div>
+  </div>
+</section>
+
+<section id="en-fixes" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">What we're asking you to turn off</div>
+    <h2>Three toggles</h2>
+    <p class="section-intro">For each one: what it does, why it should be off, and what we give up in return. We're not hiding anything — every change has a cost, however small.</p>
+
+    <div class="fix prio">
+      <div class="fix-head">
+        <div class="fix-n">1</div>
+        <div class="fix-title">
+          <h3>Email Address Obfuscation</h3>
+          <div class="path">Security → Settings → Email Address Obfuscation</div>
+        </div>
+        <span class="pill guess">theory · 2 min to verify</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Why turn it off</div>
+          <p>This is most likely <b>what breaks the WordPress Customizer</b>. The feature hides email addresses from spam bots: it finds an email in the HTML and swaps it for a placeholder link. The problem is that it also reaches <b>inside scripts</b> — and when something in the code merely looks like an email, it injects a chunk of HTML right into the JavaScript. The script then crashes.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">What we give up</div>
+          <p>Email addresses on the pages become visible to spam bots as plain text. A small thing, but we'd rather say it up front. If it matters, we can handle it on the WordPress side later.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fix prio">
+      <div class="fix-head">
+        <div class="fix-n">2</div>
+        <div class="fix-title">
+          <h3>Browser Integrity Check</h3>
+          <div class="path">Security → Settings → Browser Integrity Check</div>
+        </div>
+        <span class="pill off">blocks our work</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Why turn it off</div>
+          <p>It decides whether a "real browser" knocked, and turns everything else away with a <code>403</code> page. Our working tools get caught in the crossfire:</p>
+          <ul class="mini">
+            <li><b>WordPress MCP doesn't work</b> — the tool we use to make changes and pull pages in bulk. Right now everything has to be done by hand through a browser.</li>
+            <li><b>We can't verify the trackers remotely</b> — meaning we cannot confirm that the CIPA work is actually done.</li>
+          </ul>
+        </div>
+        <div class="fx risk">
+          <div class="k">What we give up</div>
+          <p>Almost nothing. It's a crude header check, not real protection — the WAF and DDoS protection do the actual work, and we're leaving those alone.</p>
+          <p><b>If it can't be turned off:</b> leave it on, but add a skip rule for the <code>/wp-json/</code> and <code>/wp-admin/</code> paths.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fix">
+      <div class="fix-head">
+        <div class="fix-n">3</div>
+        <div class="fix-title">
+          <h3>Web Analytics (RUM)</h3>
+          <div class="path">Speed → Settings → Recommendations → Web analytics</div>
+        </div>
+        <span class="pill off">CIPA risk</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Why turn it off</div>
+          <p>This is <b>Cloudflare's own analytics tracker</b>. It fires before the visitor clicks "Accept" — precisely what the demand letter is about. And it <b>cannot be blocked by a consent banner</b> (we explain why below). There's no upside either: analytics is already collected through Google Analytics.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">What we give up</div>
+          <p>Traffic statistics inside the Cloudflare dashboard. The same numbers are already in GA4, so effectively nothing is lost.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fix low">
+      <div class="fix-head">
+        <div class="fix-n">4</div>
+        <div class="fix-title">
+          <h3>Minor: JS Detections and Schema validation</h3>
+          <div class="path">Security → Settings</div>
+        </div>
+        <span class="pill guess">optional</span>
+      </div>
+      <div class="fix-body">
+        <div class="fx">
+          <div class="k">Why turn it off</div>
+          <p><b>JS Detections</b> injects yet another Cloudflare script into your pages — unwanted noise for the consent work. <b>Schema validation</b> is on but configured with nothing (zero schemas, action set to "no action") — just clutter in the settings.</p>
+        </div>
+        <div class="fx risk">
+          <div class="k">What we give up</div>
+          <p>Nothing noticeable. This is housekeeping, not a fix — it can wait.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="en-why">
+  <div class="wrap">
+    <div class="eyebrow">Why this matters right now</div>
+    <h2>A consent banner cannot stop Cloudflare's scripts</h2>
+    <p class="section-intro">This is the key point, and it's easy to miss. The consent plugin (Complianz) lives <b>inside WordPress</b>. Cloudflare adds its scripts <b>after</b> WordPress has already handed over the page — further downstream. The plugin physically cannot see them, and cannot block them.</p>
+
+    <div class="flow">
+      <div class="row">
+        <div class="node ok"><div class="t">WordPress</div><div class="s">Complianz blocks trackers ✓</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Cloudflare</div><div class="s">appends its own scripts</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Browser</div><div class="s">tracker fires without consent</div></div>
+      </div>
+      <div class="label">The plugin did its job, but <b>Cloudflare added the tracker after it</b>. The only way out is the dashboard toggle.</div>
+    </div>
+
+    <div class="verdict">
+      Bottom line: while these toggles are on, the CIPA task <b>cannot be closed by any plugin</b>. This is not a website configuration question — it's a Cloudflare configuration question.
+    </div>
+  </div>
+</section>
+
+<section id="en-cache" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">A separate headache</div>
+    <h2>Our changes don't reach the site</h2>
+    <p class="section-intro">We change some text or add a script — and nothing shows up on the site. Sometimes for weeks. The reason is simple, and it's Cloudflare again.</p>
+
+    <div class="flow">
+      <div class="row">
+        <div class="node ok"><div class="t">We edit the site</div><div class="s">changes are saved</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Cloudflare</div><div class="s">serves a cached copy</div></div>
+        <span class="arrow">→</span>
+        <div class="node bad"><div class="t">Visitor</div><div class="s">sees the old version</div></div>
+      </div>
+      <div class="label">For Cloudflare to serve the fresh page, the cache has to be <b>purged</b>. We currently have no button to do that.</div>
+    </div>
+
+    <div class="verdict" style="margin-top:26px">
+      WordPress <b>already has the official Cloudflare plugin installed</b> — with a purge button and automatic cache clearing whenever a page is saved.
+      It <b>used to be connected</b>, but the authorization was lost: the credential fields are empty and the plugin asks you to sign in again.
+      A new token fixes this for good.
+    </div>
+  </div>
+</section>
+
+<section id="en-need">
+  <div class="wrap">
+    <div class="eyebrow">The ask</div>
+    <h2>What we need from you</h2>
+    <p class="section-intro">Everything we're asking for, in one list. Three groups: what to turn off, what to send, and what to screenshot. About fifteen minutes in the dashboard.</p>
+
+    <div class="group">
+      <div class="g-n">A</div>
+      <div class="g-t">
+        <h3>Turn off three toggles</h3>
+        <p>The reasoning for each is <a href="#en-fixes">in the section above</a>. All are reversible with one click.</p>
+      </div>
+    </div>
+
+    <div class="ticks">
+      <div class="tick">
+        <input type="checkbox" id="e-t1">
+        <label for="e-t1">
+          <div class="nm">1. Email Address Obfuscation</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Most likely what breaks the Customizer — the header and footer currently cannot be edited.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="e-t2">
+        <label for="e-t2">
+          <div class="nm">2. Browser Integrity Check</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Turns our tools away with a <code>403</code>. Because of it, the site can't be edited or verified remotely.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="e-t3">
+        <label for="e-t3">
+          <div class="nm">3. Web Analytics (RUM)</div>
+          <div class="pt">Speed → Settings → Recommendations</div>
+          <div class="wy">A Cloudflare tracker that fires before consent. A banner can't stop it — only this toggle can.</div>
+        </label>
+      </div>
+      <div class="tick">
+        <input type="checkbox" id="e-t4">
+        <label for="e-t4">
+          <div class="nm">4. Optional: JS Detections and Schema validation</div>
+          <div class="pt">Security → Settings</div>
+          <div class="wy">Housekeeping, not a fix. Can wait.</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="g-n">B</div>
+      <div class="g-t">
+        <h3>Send us access</h3>
+        <p>Three items. None of them grants access to your account, your domain, or your billing.</p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">1</div>
+        <h3>Cloudflare API token</h3>
+      </div>
+      <p>To connect the already-installed plugin and get a cache purge button. <b>Please do not send the Global API Key</b> — it grants full access to the entire account. What we need is a <b>token</b>, scoped to a single domain.</p>
+
+      <table class="perm">
+        <tr><th>Section</th><th>Permission</th><th>What for</th></tr>
+        <tr><td>Zone → Zone</td><td>Read</td><td>so the plugin can find your domain</td></tr>
+        <tr><td>Zone → Zone Settings</td><td>Edit</td><td>to read and change settings for this domain</td></tr>
+        <tr><td>Zone → Cache Purge</td><td>Purge</td><td>the cache purge itself</td></tr>
+      </table>
+
+      <div class="where-box">
+        <div class="k">Where to create it</div>
+        <b>My Profile → API Tokens → Create Token → Custom token</b><br>
+        Under <b>Zone Resources</b> select: Include → Specific zone → <code>marketproinc.com</code>
+      </div>
+
+      <div class="safe">
+        <b>This is safe.</b> Such a token cannot touch DNS, other domains, billing, or account settings. Only the cache and the settings of this one site. You can revoke it at any moment with a single click.
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">2</div>
+        <h3>Cloudflare account email</h3>
+      </div>
+      <p>The address the account holding <code>marketproinc.com</code> is registered under. The plugin may ask for it alongside the token.</p>
+      <p style="color:var(--muted)">The email on its own opens nothing — it's useless without a token. We're asking now so we don't have to come back for a second round.</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head">
+        <div class="item-n">3</div>
+        <h3>Zone ID</h3>
+      </div>
+      <p>The internal identifier of your domain in Cloudflare — a 32-character string. It's needed because Cloudflare's API addresses domains by ID, not by name.</p>
+      <div class="where-box">
+        <div class="k">Where to find it</div>
+        Select the <code>marketproinc.com</code> domain → the <b>Overview</b> tab → scroll down to the <b>right-hand column</b>, the <b>API</b> box.<br>
+        Two fields are there: <b>Zone ID</b> and Account ID. We need the first one; it has a "Click to copy" button.
+      </div>
+      <p style="color:var(--muted);margin-top:12px">Not a secret: it's just an address, like a house number. Without a token, nothing can be done with it.</p>
+    </div>
+
+    <div class="group">
+      <div class="g-n">C</div>
+      <div class="g-t">
+        <h3>Send us three screenshots</h3>
+        <p>So we can stop guessing. In descending order of importance — the first is worth more than the other two combined.</p>
+      </div>
+    </div>
+
+    <div class="ask">
+      <p style="color:#c4ccd6;margin-bottom:14px">The screenshots you sent earlier show the <b>Settings</b> page — only the setting <i>cards</i>. What we need are the <i>rule lists</i>, and those live in neighbouring sections.</p>
+      <p style="color:#8a93a0;margin-bottom:22px;font-size:14px">📍 <b>Where to look:</b> <b>Events</b> and <b>WAF</b> are not cards on the Settings page — they are separate items <b>in the left-hand menu</b>, inside the <b>Security</b> section, right next to the Settings item you screenshotted before.</p>
+
+      <div class="shots">
+        <div class="shot star">
+          <input type="checkbox" id="e-s1">
+          <label for="e-s1">
+            <div class="nm">Blocking log ★ most important</div>
+            <div class="pt">Security → Events · last 24 hours · filter Action = Block</div>
+            <div class="wy">It shows the exact rule turning us away, by name and ID. That's a direct answer instead of our guesswork.</div>
+          </label>
+        </div>
+        <div class="shot star">
+          <input type="checkbox" id="e-s2">
+          <label for="e-s2">
+            <div class="nm">Script optimization and page cache ★</div>
+            <div class="pt">Speed → Optimization → Content Optimization</div>
+            <div class="wy">We need to confirm <b>Rocket Loader is off</b>. From what we've seen it already is, but it's worth checking: if it's on, it reorders script loading and <b>will break tracker blocking</b> — sinking the main task. The same tab also shows whether <b>APO</b> (Automatic Platform Optimization) is on — the mode where Cloudflare stores finished pages and serves them instead of asking WordPress each time. That's exactly why edits may not reach the site.</div>
+          </label>
+        </div>
+        <div class="shot">
+          <input type="checkbox" id="e-s3">
+          <label for="e-s3">
+            <div class="nm">WAF rules</div>
+            <div class="pt">Security → WAF → the Custom rules and Tools (IP Access Rules) tabs</div>
+            <div class="wy">The two places where an IP-based block could live. If the lists are empty, just tell us — that's an answer too.</div>
+          </label>
+        </div>
+      </div>
+
+      <p class="note">Full screenshots, with the whole list visible. We'll ask for anything else later, if it turns out we need it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  MarketPro · Cloudflare change request · prepared July 10, 2026
+</footer>
+
+</div>
+<!-- ============================== END ENGLISH ============================== -->
+
+
+<!-- ============================== РУССКИЙ ============================== -->
+<div class="doc" id="doc-ru" lang="ru">
+
 <header class="hero">
   <div class="wrap">
     <span class="badge">● Запрос на правки · MarketPro</span>
@@ -195,7 +614,6 @@
   </div>
 </header>
 
-<!-- SUMMARY -->
 <div class="wrap">
   <div class="summary">
     <div class="st">Если читать некогда</div>
@@ -224,24 +642,26 @@
     </div>
     <div class="sum-foot">
       Времени — <b>около 15 минут</b>. В код сайта не лезем, сам сайт не трогаем. Всё делается переключателями в панели.
-      <b><a href="#need" style="color:var(--orange-dark)">Сразу к списку задач →</a></b>
+      <b><a href="#ru-need" style="color:var(--orange-dark)">Сразу к списку задач →</a></b>
     </div>
   </div>
 </div>
 
-<!-- NAV -->
 <nav class="nav">
   <div class="wrap">
-    <a href="#proven">Что уже проверено</a>
-    <a href="#fixes">Что выключить</a>
-    <a href="#why">Почему это важно</a>
-    <a href="#cache">Почему правки не доезжают</a>
-    <a href="#need" class="cta">Что нужно от вас</a>
+    <a href="#ru-proven">Что уже проверено</a>
+    <a href="#ru-fixes">Что выключить</a>
+    <a href="#ru-why">Почему это важно</a>
+    <a href="#ru-cache">Почему правки не доезжают</a>
+    <a href="#ru-need" class="cta">Что нужно от вас</a>
+    <div class="langs">
+      <label for="L-en">EN</label>
+      <span class="on">RU</span>
+    </div>
   </div>
 </nav>
 
-<!-- WHAT WE ALREADY KNOW -->
-<section id="proven">
+<section id="ru-proven">
   <div class="wrap">
     <div class="eyebrow">Прежде чем просить</div>
     <h2>Мы не гадаем — вот что уже проверено</h2>
@@ -270,14 +690,12 @@
   </div>
 </section>
 
-<!-- THE FIXES -->
-<section id="fixes" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<section id="ru-fixes" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="eyebrow">Что просим выключить</div>
     <h2>Три переключателя</h2>
     <p class="section-intro">По каждому: что это, зачем выключать и что мы при этом теряем. Ничего не скрываем — у каждой правки есть цена, хоть и небольшая.</p>
 
-    <!-- FIX 1 -->
     <div class="fix prio">
       <div class="fix-head">
         <div class="fix-n">1</div>
@@ -299,7 +717,6 @@
       </div>
     </div>
 
-    <!-- FIX 2 -->
     <div class="fix prio">
       <div class="fix-head">
         <div class="fix-n">2</div>
@@ -326,7 +743,6 @@
       </div>
     </div>
 
-    <!-- FIX 3 -->
     <div class="fix">
       <div class="fix-head">
         <div class="fix-n">3</div>
@@ -348,7 +764,6 @@
       </div>
     </div>
 
-    <!-- FIX 4 -->
     <div class="fix low">
       <div class="fix-head">
         <div class="fix-n">4</div>
@@ -372,8 +787,7 @@
   </div>
 </section>
 
-<!-- WHY CMP CANT BLOCK -->
-<section id="why">
+<section id="ru-why">
   <div class="wrap">
     <div class="eyebrow">Почему это важно именно сейчас</div>
     <h2>Баннер согласия не может остановить скрипты Cloudflare</h2>
@@ -396,8 +810,7 @@
   </div>
 </section>
 
-<!-- CACHE PROBLEM -->
-<section id="cache" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<section id="ru-cache" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="eyebrow">Отдельная боль</div>
     <h2>Правки не доезжают до сайта</h2>
@@ -422,50 +835,48 @@
   </div>
 </section>
 
-<!-- WHAT WE NEED -->
-<section id="need">
+<section id="ru-need">
   <div class="wrap">
     <div class="eyebrow">Просьба</div>
     <h2>Что нам нужно от вас</h2>
     <p class="section-intro">Всё, о чём мы просим, — в одном списке. Три блока: что выключить, что прислать и что сфотографировать. Работы в панели — минут пятнадцать.</p>
 
-    <!-- GROUP A -->
     <div class="group">
       <div class="g-n">А</div>
       <div class="g-t">
         <h3>Выключить три переключателя</h3>
-        <p>Обоснование по каждому — <a href="#fixes">в разделе выше</a>. Все обратимы одним кликом.</p>
+        <p>Обоснование по каждому — <a href="#ru-fixes">в разделе выше</a>. Все обратимы одним кликом.</p>
       </div>
     </div>
 
     <div class="ticks">
       <div class="tick">
-        <input type="checkbox" id="t1">
-        <label for="t1">
+        <input type="checkbox" id="r-t1">
+        <label for="r-t1">
           <div class="nm">1. Email Address Obfuscation</div>
           <div class="pt">Security → Settings</div>
           <div class="wy">Скорее всего именно он ломает кастомайзер — шапку и подвал сейчас не отредактировать.</div>
         </label>
       </div>
       <div class="tick">
-        <input type="checkbox" id="t2">
-        <label for="t2">
+        <input type="checkbox" id="r-t2">
+        <label for="r-t2">
           <div class="nm">2. Browser Integrity Check</div>
           <div class="pt">Security → Settings</div>
           <div class="wy">Отбивает наши инструменты страницей <code>403</code>. Из-за него сайт нельзя править и проверять удалённо.</div>
         </label>
       </div>
       <div class="tick">
-        <input type="checkbox" id="t3">
-        <label for="t3">
+        <input type="checkbox" id="r-t3">
+        <label for="r-t3">
           <div class="nm">3. Web Analytics (RUM)</div>
           <div class="pt">Speed → Settings → Recommendations</div>
           <div class="wy">Трекер Cloudflare, стреляет до согласия. Баннером его не остановить — только этой галкой.</div>
         </label>
       </div>
       <div class="tick">
-        <input type="checkbox" id="t4">
-        <label for="t4">
+        <input type="checkbox" id="r-t4">
+        <label for="r-t4">
           <div class="nm">4. По желанию: JS Detections и Schema validation</div>
           <div class="pt">Security → Settings</div>
           <div class="wy">Уборка, а не лечение. Можно оставить на потом.</div>
@@ -473,7 +884,6 @@
       </div>
     </div>
 
-    <!-- GROUP B -->
     <div class="group">
       <div class="g-n">Б</div>
       <div class="g-t">
@@ -482,7 +892,6 @@
       </div>
     </div>
 
-    <!-- 1. TOKEN -->
     <div class="item">
       <div class="item-head">
         <div class="item-n">1</div>
@@ -492,7 +901,7 @@
 
       <table class="perm">
         <tr><th>Раздел</th><th>Право</th><th>Зачем</th></tr>
-        <tr><td>Zone → Zone</td><td>Read</td><td>чтобы плагин нашёл нужный домен</td></tr>
+        <tr><td>Zone → Zone</td><td>Read</td><td>чтобы плагин нашёл вашу зону</td></tr>
         <tr><td>Zone → Zone Settings</td><td>Edit</td><td>читать и менять настройки этого домена</td></tr>
         <tr><td>Zone → Cache Purge</td><td>Purge</td><td>собственно сброс кэша</td></tr>
       </table>
@@ -508,7 +917,6 @@
       </div>
     </div>
 
-    <!-- 2. EMAIL -->
     <div class="item">
       <div class="item-head">
         <div class="item-n">2</div>
@@ -518,7 +926,6 @@
       <p style="color:var(--muted)">Сам по себе email ничего не открывает — без токена он бесполезен. Просим на всякий случай, чтобы не гонять переписку по второму кругу.</p>
     </div>
 
-    <!-- 3. ZONE ID -->
     <div class="item">
       <div class="item-head">
         <div class="item-n">3</div>
@@ -533,7 +940,6 @@
       <p style="color:var(--muted);margin-top:12px">Не секрет: это просто адрес, как номер дома. Без токена по нему ничего сделать нельзя.</p>
     </div>
 
-    <!-- GROUP C -->
     <div class="group">
       <div class="g-n">В</div>
       <div class="g-t">
@@ -548,24 +954,24 @@
 
       <div class="shots">
         <div class="shot star">
-          <input type="checkbox" id="s1">
-          <label for="s1">
-            <div class="nm">Журнал блокировок</div>
+          <input type="checkbox" id="r-s1">
+          <label for="r-s1">
+            <div class="nm">Журнал блокировок ★ важнее всего</div>
             <div class="pt">Security → Events · период 24 часа · фильтр Action = Block</div>
             <div class="wy">Покажет точное правило, которое нас отбивает, — с его названием и номером. Это прямой ответ вместо наших догадок.</div>
           </label>
         </div>
         <div class="shot star">
-          <input type="checkbox" id="s2">
-          <label for="s2">
-            <div class="nm">Оптимизация скриптов и кэш страниц</div>
+          <input type="checkbox" id="r-s2">
+          <label for="r-s2">
+            <div class="nm">Оптимизация скриптов и кэш страниц ★</div>
             <div class="pt">Speed → Optimization → Content Optimization</div>
             <div class="wy">Нужно убедиться, что <b>Rocket Loader выключен</b>. По нашим наблюдениям он и так выключен, но проверить стоит: если он всё же включён, он меняет порядок загрузки скриптов и <b>помешает блокировке трекеров</b> — то есть сорвёт основную задачу. Заодно на этой же вкладке видно, включён ли <b>APO</b> (Automatic Platform Optimization) — режим, в котором Cloudflare складывает готовые страницы сайта к себе и отдаёт их посетителям вместо того, чтобы каждый раз спрашивать WordPress. Именно из-за него правки могут не доезжать до сайта.</div>
           </label>
         </div>
         <div class="shot">
-          <input type="checkbox" id="s3">
-          <label for="s3">
+          <input type="checkbox" id="r-s3">
+          <label for="r-s3">
             <div class="nm">Правила WAF</div>
             <div class="pt">Security → WAF → вкладки Custom rules и Tools (IP Access Rules)</div>
             <div class="wy">Два места, где может стоять блокировка по IP-адресу. Если списки пустые — так и напишите, это тоже ответ.</div>
@@ -581,6 +987,9 @@
 <footer>
   MarketPro · запрос на правки в Cloudflare · подготовлено 10.07.2026
 </footer>
+
+</div>
+<!-- ============================== КОНЕЦ РУССКОГО ============================== -->
 
 </body>
 </html>
